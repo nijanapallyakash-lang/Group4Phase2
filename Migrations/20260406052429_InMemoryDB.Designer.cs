@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Group4Flight.Migrations
 {
     [DbContext(typeof(FlightContext))]
-    [Migration("20260406043632_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260406052429_InMemoryDB")]
+    partial class InMemoryDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
