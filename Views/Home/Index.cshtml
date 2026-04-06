@@ -1,0 +1,143 @@
+@model Group4Flight.Models.FlightViewModel
+@{
+    Layout = "_MainLayout";
+    ViewData["Title"] = "Client Dashboard";
+    ViewBag.SelectionCount = Model.SelectionCount;
+}
+
+<div class="row">
+
+    <!-- Filtering Panel -->
+    <div class="col-md-3">
+        <h5>Search Flights</h5>
+        <form asp-action="Index" asp-controller="Home" method="post">
+
+            <div class="mb-2">
+                <label class="form-label">From</label>
+                <select name="FilterFrom" class="form-select">
+                    <option value="">-- Any --</option>
+                    @foreach (var city in Model.FromCities)
+                    {
+                        if (Model.FilterFrom == city)
+                        {
+                            <option value="@city" selected>@city</option>
+                        }
+                        else
+                        {
+                            <option value="@city">@city</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="mb-2">
+                <label class="form-label">To</label>
+                <select name="FilterTo" class="form-select">
+                    <option value="">-- Any --</option>
+                    @foreach (var city in Model.ToCities)
+                    {
+                        if (Model.FilterTo == city)
+                        {
+                            <option value="@city" selected>@city</option>
+                        }
+                        else
+                        {
+                            <option value="@city">@city</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="mb-2">
+                <label class="form-label">Departure Date</label>
+                <input type="text" id="departureDatePicker" name="FilterDate" class="form-control"
+                       value="@(Model.FilterDate.HasValue ? Model.FilterDate.Value.ToString("MM/dd/yyyy") : DateTime.Today.AddDays(1).ToString("MM/dd/yyyy"))"
+                       autocomplete="off" />
+            </div>
+
+            <div class="mb-2">
+                <label class="form-label">Cabin Type</label>
+                <select name="FilterCabin" class="form-select">
+                    <option value="">All</option>
+                    @foreach (var cabin in Model.CabinTypes)
+                    {
+                        if (Model.FilterCabin == cabin)
+                        {
+                            <option value="@cabin" selected>@cabin</option>
+                        }
+                        else
+                        {
+                            <option value="@cabin">@cabin</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </form>
+    </div>
+
+    <!-- Filtering Result -->
+    <div class="col-md-9">
+        <h5>Available Flights (@Model.Flights.Count found)</h5>
+
+        @if (!Model.Flights.Any())
+        {
+            <p>No flights match your search. Try adjusting the filters.</p>
+        }
+        else
+        {
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Airline</th>
+                        <th>Flight Time</th>
+                        <th>Duration</th>
+                        <th>Emission (kg)</th>
+                        <th>Cost</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var f in Model.Flights)
+                    {
+                        var dur = f.ArrivalTime - f.DepartureTime;
+                        if (dur < TimeSpan.Zero) dur = dur.Add(TimeSpan.FromHours(24));
+
+                        <tr>
+                            <td>
+                                @if (f.Airline != null && !string.IsNullOrEmpty(f.Airline.ImageName))
+                                {
+                                    <img src="~/images/@f.Airline.ImageName" alt="@f.Airline.Name"
+                                         style="height:24px;" onerror="this.style.display='none'" />
+                                }
+                                @f.Airline?.Name
+                            </td>
+                            <td>@f.DepartureTime.ToString(@"hh\:mm") – @f.ArrivalTime.ToString(@"hh\:mm")</td>
+                            <td>@($"{(int)dur.TotalHours}h {dur.Minutes}m")</td>
+                            <td>@f.Emission.ToString("F1")</td>
+                            <td>$@f.Price</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@f.FlightId" class="btn btn-sm btn-outline-primary">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    $(function () {
+        $('#departureDatePicker').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            autoApply: true,
+            locale: { format: 'MM/DD/YYYY' },
+            startDate: $('#departureDatePicker').val()
+        });
+    });
+</script>
+}

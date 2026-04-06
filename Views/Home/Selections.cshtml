@@ -1,0 +1,62 @@
+@model List<Group4Flight.Models.Flight>
+@{
+    Layout = "_MainLayout";
+    ViewData["Title"] = "My Selections";
+    ViewBag.SelectionCount = Model.Count;
+}
+
+<h4>My Selected Flights</h4>
+<hr />
+
+@* Return to home with retained filter *@
+<a asp-action="Index" asp-controller="Home" class="btn btn-secondary mb-3">Back to Home</a>
+
+@if (!Model.Any())
+{
+    <p>You have no selected flights.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Flight Code</th>
+                <th>Airline</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Date</th>
+                <th>Departure</th>
+                <th>Cabin</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var f in Model)
+            {
+                <tr>
+                    <td>@f.FlightCode</td>
+                    <td>@f.Airline?.Name</td>
+                    <td>@f.From</td>
+                    <td>@f.To</td>
+                    <td>@f.Date.ToString("MMM dd, yyyy")</td>
+                    <td>@f.DepartureTime.ToString(@"hh\:mm")</td>
+                    <td>@f.CabinType</td>
+                    <td>$@f.Price</td>
+                    <td>
+                        <form asp-action="CancelSelection" asp-controller="Home" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="flightId" value="@f.FlightId" />
+                            <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <form asp-action="ClearSelections" asp-controller="Home" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-outline-danger">Clear All Selections</button>
+    </form>
+}

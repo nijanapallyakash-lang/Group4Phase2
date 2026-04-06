@@ -1,0 +1,23 @@
+@{
+    // Inherits from the master base layout
+    Layout = "_Layout";
+    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+}
+
+<nav class="nav-bar" style="display: flex; justify-content: space-between; background-color: #e9ecef; padding: 10px;">
+    <ul class="left-nav" style="list-style: none; display: flex; gap: 15px; margin: 0; padding: 0;">
+        <li><a asp-area="Admin" asp-controller="Users" asp-action="Index" 
+               class="@(currentAction == "Index" ? "active-link" : "")">Dashboard</a></li>
+        <li><a asp-area="Admin" asp-controller="Users" asp-action="Manage" 
+               class="@(currentAction == "Manage" ? "active-link" : "")">Manage</a></li>
+        <li><a asp-area="Admin" asp-controller="Users" asp-action="Rights" 
+               class="@(currentAction == "Rights" ? "active-link" : "")">Rights & Obligations</a></li>
+    </ul>
+    <ul class="right-nav" style="list-style: none; margin: 0; padding: 0;">
+        <li><a asp-area="" asp-controller="Home" asp-action="Index">View Site</a></li>
+    </ul>
+</nav>
+
+<div class="admin-content" style="padding: 20px;">
+    @RenderBody()
+</div>

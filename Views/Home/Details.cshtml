@@ -1,0 +1,68 @@
+@model Group4Flight.Models.Flight
+@{
+    Layout = "_MainLayout";
+    ViewData["Title"] = "Flight Details";
+    ViewBag.SelectionCount = ViewBag.SelectionCount;
+
+    var dur = Model.ArrivalTime - Model.DepartureTime;
+    if (dur < TimeSpan.Zero) dur = dur.Add(TimeSpan.FromHours(24));
+}
+
+<h4>Flight Details</h4>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Flight Code</dt>
+    <dd class="col-sm-9">@Model.FlightCode</dd>
+
+    <dt class="col-sm-3">From</dt>
+    <dd class="col-sm-9">@Model.From</dd>
+
+    <dt class="col-sm-3">To</dt>
+    <dd class="col-sm-9">@Model.To</dd>
+
+    <dt class="col-sm-3">Date</dt>
+    <dd class="col-sm-9">@Model.Date.ToString("MMMM dd, yyyy")</dd>
+
+    <dt class="col-sm-3">Departing Time</dt>
+    <dd class="col-sm-9">@Model.DepartureTime.ToString(@"hh\:mm")</dd>
+
+    <dt class="col-sm-3">Arrival Time</dt>
+    <dd class="col-sm-9">@Model.ArrivalTime.ToString(@"hh\:mm")</dd>
+
+    <dt class="col-sm-3">Flight Duration</dt>
+    <dd class="col-sm-9">@($"{(int)dur.TotalHours}h {dur.Minutes}m")</dd>
+
+    <dt class="col-sm-3">Cabin Type</dt>
+    <dd class="col-sm-9">@Model.CabinType</dd>
+
+    <dt class="col-sm-3">Aircraft Type</dt>
+    <dd class="col-sm-9">@Model.AircraftType</dd>
+
+    <dt class="col-sm-3">Emission</dt>
+    <dd class="col-sm-9">@Model.Emission.ToString("F1") kg CO2</dd>
+
+    <dt class="col-sm-3">Price</dt>
+    <dd class="col-sm-9">$@Model.Price</dd>
+
+    <dt class="col-sm-3">Airline</dt>
+    <dd class="col-sm-9">@Model.Airline?.Name</dd>
+</dl>
+
+<div class="mt-3">
+    @* Back to Home — filter criteria retained via session *@
+    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Back to Home</a>
+
+    @if (ViewBag.IsSelected == true)
+    {
+        <span class="btn btn-success disabled ms-2">&#10003; Already Selected</span>
+    }
+    else
+    {
+        <form asp-action="Select" asp-controller="Home" method="post" class="d-inline ms-2">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="flightId" value="@Model.FlightId" />
+            <button type="submit" class="btn btn-primary">Select</button>
+        </form>
+    }
+</div>

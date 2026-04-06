@@ -1,0 +1,38 @@
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+}
+
+@section NavLinks {
+    <ul class="navbar-nav flex-grow-1">
+        <li class="nav-item">
+            <a class="nav-link text-dark @(currentAction == "Index" ? "active" : "")"
+               asp-area="Airlines" asp-controller="Flights" asp-action="Index">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark @(currentAction == "Regulation" ? "active" : "")"
+               asp-area="Airlines" asp-controller="Flights" asp-action="Regulation">Regulation</a>
+        </li>
+    </ul>
+
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">View Site</a>
+        </li>
+    </ul>
+}
+
+@* TempData confirmation — shown once (requirement: uniform location in layout) *@
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show mx-3 mt-2" role="alert">
+        @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="container">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
