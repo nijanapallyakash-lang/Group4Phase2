@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\akash\\Downloads\\Group4Phase2\\Group4Phase2\\Group4Flight.csproj": {}
+    "C:\\Users\\akash\\OneDrive\\Desktop\\Group4Phase3\\Group4Flight.csproj": {}
   },
   "projects": {
-    "C:\\Users\\akash\\Downloads\\Group4Phase2\\Group4Phase2\\Group4Flight.csproj": {
+    "C:\\Users\\akash\\OneDrive\\Desktop\\Group4Phase3\\Group4Flight.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\akash\\Downloads\\Group4Phase2\\Group4Phase2\\Group4Flight.csproj",
+        "projectUniqueName": "C:\\Users\\akash\\OneDrive\\Desktop\\Group4Phase3\\Group4Flight.csproj",
         "projectName": "Group4Flight",
-        "projectPath": "C:\\Users\\akash\\Downloads\\Group4Phase2\\Group4Phase2\\Group4Flight.csproj",
+        "projectPath": "C:\\Users\\akash\\OneDrive\\Desktop\\Group4Phase3\\Group4Flight.csproj",
         "packagesPath": "C:\\Users\\akash\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\akash\\Downloads\\Group4Phase2\\Group4Phase2\\obj\\",
+        "outputPath": "C:\\Users\\akash\\OneDrive\\Desktop\\Group4Phase3\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\akash\\AppData\\Roaming\\NuGet\\NuGet.Config"

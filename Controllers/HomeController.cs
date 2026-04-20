@@ -16,11 +16,9 @@ public class HomeController : Controller
         _db = db;
     }
 
-    // Helper properties for session and cookie wrappers
     private FlightSession Session => new FlightSession(HttpContext.Session);
     private FlightCookies Cookie => new FlightCookies(HttpContext);
 
-    // GET: Home/Index — seed session from cookie, apply filter, build ViewModel
     public IActionResult Index()
     {
         var cookieIds = Cookie.GetSelections();
@@ -39,7 +37,6 @@ public class HomeController : Controller
         return View(vm);
     }
 
-    // POST: Home/Index — save filter to session, PRG redirect
     [HttpPost]
     public IActionResult Index(FlightViewModel form)
     {
@@ -54,7 +51,6 @@ public class HomeController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    // GET: Home/Details/5
     public IActionResult Details(int id)
     {
         var flight = _db.Flights.Include(f => f.Airline).FirstOrDefault(f => f.FlightId == id);
@@ -65,7 +61,6 @@ public class HomeController : Controller
         return View(flight);
     }
 
-    // POST: Home/Select — PRG redirect back to Details
     [HttpPost]
     public IActionResult Select(int flightId)
     {
@@ -82,7 +77,6 @@ public class HomeController : Controller
         return RedirectToAction(nameof(Details), new { id = flightId });
     }
 
-    // GET: Home/Selections
     public IActionResult Selections()
     {
         var ids = Session.GetSelections();
@@ -93,7 +87,6 @@ public class HomeController : Controller
         return View(flights);
     }
 
-    // POST: Home/CancelSelection — PRG
     [HttpPost]
     public IActionResult CancelSelection(int flightId)
     {
@@ -103,7 +96,6 @@ public class HomeController : Controller
         return RedirectToAction(nameof(Selections));
     }
 
-    // POST: Home/ClearSelections — PRG
     [HttpPost]
     public IActionResult ClearSelections()
     {
@@ -124,7 +116,6 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    // Builds the ViewModel by querying the DB and applying filter criteria
     private FlightViewModel BuildViewModel(FilterCriteria criteria)
     {
         var query = _db.Flights.Include(f => f.Airline).AsQueryable();

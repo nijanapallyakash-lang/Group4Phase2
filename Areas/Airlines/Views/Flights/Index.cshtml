@@ -7,7 +7,6 @@
 <h4>Flights</h4>
 <hr />
 
-<!-- Flight List -->
 @if (!Model.Flights.Any())
 {
     <p>No flights found.</p>
@@ -36,7 +35,6 @@ else
             {
                 if (Model.EditId == f.FlightId && Model.EditFlight != null)
                 {
-                    <!-- Inline Edit Row -->
                     <tr class="table-warning">
                         <form asp-area="Airlines" asp-controller="Flights" asp-action="Edit" method="post">
                             @Html.AntiForgeryToken()
@@ -96,15 +94,13 @@ else
                             <td><input type="number" name="Price" step="0.01" value="@Model.EditFlight.Price" class="form-control form-control-sm" required /></td>
                             <td>
                                 <button type="submit" class="btn btn-sm btn-success">Save</button>
-                                <a asp-area="Airlines" asp-controller="Flights" asp-action="Index"
-                                   class="btn btn-sm btn-secondary">Cancel</a>
+                                <a asp-area="Airlines" asp-controller="Flights" asp-action="Index" class="btn btn-sm btn-secondary">Cancel</a>
                             </td>
                         </form>
                     </tr>
                 }
                 else
                 {
-                    <!-- Normal Row -->
                     <tr>
                         <td>@f.FlightCode</td>
                         <td>@f.Airline?.Name</td>
@@ -118,14 +114,8 @@ else
                         <td>@f.Emission.ToString("F1")</td>
                         <td>$@f.Price</td>
                         <td>
-                            <!-- Edit: reload Index with editId -->
-                            <a asp-area="Airlines" asp-controller="Flights" asp-action="Index"
-                               asp-route-editId="@f.FlightId" class="btn btn-sm btn-warning">Edit</a>
-
-                            <!-- Delete inline form -->
-                            <form asp-area="Airlines" asp-controller="Flights" asp-action="Delete"
-                                  method="post" class="d-inline"
-                                  onsubmit="return confirm('Delete flight @f.FlightCode?')">
+                            <a asp-area="Airlines" asp-controller="Flights" asp-action="Index" asp-route-editId="@f.FlightId" class="btn btn-sm btn-warning">Edit</a>
+                            <form asp-area="Airlines" asp-controller="Flights" asp-action="Delete" method="post" class="d-inline" onsubmit="return confirm('Delete flight @f.FlightCode?')">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="flightId" value="@f.FlightId" />
                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -140,77 +130,91 @@ else
 
 <hr />
 
-<!-- Add Flight Form -->
-<h5>Add New Flight</h5>
+<h5 class="mt-4">Add New Flight</h5>
 <form asp-area="Airlines" asp-controller="Flights" asp-action="Create" method="post">
     @Html.AntiForgeryToken()
-    <div class="row g-2 align-items-end">
-        <div class="col-md-1">
-            <label class="form-label">Code</label>
-            <input type="text" name="FlightCode" class="form-control form-control-sm" required />
+    
+    <div class="row g-3">
+        <div class="col-md-2">
+            <label asp-for="NewFlight.FlightCode" class="form-label">Code</label>
+            <input asp-for="NewFlight.FlightCode" class="form-control form-control-sm" />
+            <span asp-validation-for="NewFlight.FlightCode" class="text-danger small"></span>
         </div>
         <div class="col-md-2">
-            <label class="form-label">Airline</label>
-            <select name="AirlineId" class="form-select form-select-sm" required>
+            <label asp-for="NewFlight.AirlineId" class="form-label">Airline</label>
+            <select asp-for="NewFlight.AirlineId" class="form-select form-select-sm">
                 <option value="">-- Select --</option>
                 @foreach (var a in Model.Airlines)
                 {
                     <option value="@a.AirlineId">@a.Name</option>
                 }
             </select>
+            <span asp-validation-for="NewFlight.AirlineId" class="text-danger small"></span>
         </div>
-        <div class="col-md-1">
-            <label class="form-label">From</label>
-            <input type="text" name="From" class="form-control form-control-sm" required />
+        <div class="col-md-2">
+            <label asp-for="NewFlight.From" class="form-label">From</label>
+            <input asp-for="NewFlight.From" class="form-control form-control-sm" />
+            <span asp-validation-for="NewFlight.From" class="text-danger small"></span>
         </div>
-        <div class="col-md-1">
-            <label class="form-label">To</label>
-            <input type="text" name="To" class="form-control form-control-sm" required />
+        <div class="col-md-2">
+            <label asp-for="NewFlight.To" class="form-label">To</label>
+            <input asp-for="NewFlight.To" class="form-control form-control-sm" />
+            <span asp-validation-for="NewFlight.To" class="text-danger small"></span>
         </div>
-        <div class="col-md-1">
-            <label class="form-label">Date</label>
-            <input type="date" name="Date" class="form-control form-control-sm" required
-                   value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")" />
+        <div class="col-md-2">
+            <label asp-for="NewFlight.Date" class="form-label">Date</label>
+            <input asp-for="NewFlight.Date" type="date" class="form-control form-control-sm" />
+            <span asp-validation-for="NewFlight.Date" class="text-danger small"></span>
         </div>
-        <div class="col-md-1">
-            <label class="form-label">Departs</label>
-            <input type="time" name="DepartureTime" class="form-control form-control-sm" required />
+        <div class="col-md-2">
+            <label asp-for="NewFlight.DepartureTime" class="form-label">Departs</label>
+            <input asp-for="NewFlight.DepartureTime" type="time" class="form-control form-control-sm" />
+            <span asp-validation-for="NewFlight.DepartureTime" class="text-danger small"></span>
         </div>
-        <div class="col-md-1">
-            <label class="form-label">Arrives</label>
-            <input type="time" name="ArrivalTime" class="form-control form-control-sm" required />
+        <div class="col-md-2">
+            <label asp-for="NewFlight.ArrivalTime" class="form-label">Arrives</label>
+            <input asp-for="NewFlight.ArrivalTime" type="time" class="form-control form-control-sm" />
+            <span asp-validation-for="NewFlight.ArrivalTime" class="text-danger small"></span>
         </div>
-        <div class="col-md-1">
-            <label class="form-label">Cabin</label>
-            <select name="CabinType" class="form-select form-select-sm" required>
+        <div class="col-md-2">
+            <label asp-for="NewFlight.CabinType" class="form-label">Cabin</label>
+            <select asp-for="NewFlight.CabinType" class="form-select form-select-sm">
                 <option value="">--</option>
                 @foreach (var c in Model.CabinTypes)
                 {
                     <option value="@c">@c</option>
                 }
             </select>
+            <span asp-validation-for="NewFlight.CabinType" class="text-danger small"></span>
         </div>
-        <div class="col-md-1">
-            <label class="form-label">Aircraft</label>
-            <select name="AircraftType" class="form-select form-select-sm" required>
+        <div class="col-md-2">
+            <label asp-for="NewFlight.AircraftType" class="form-label">Aircraft</label>
+            <select asp-for="NewFlight.AircraftType" class="form-select form-select-sm">
                 <option value="">--</option>
                 @foreach (var t in Model.AircraftTypes)
                 {
                     <option value="@t">@t</option>
                 }
             </select>
+            <span asp-validation-for="NewFlight.AircraftType" class="text-danger small"></span>
         </div>
-        <div class="col-md-1">
-            <label class="form-label">Emission</label>
-            <input type="number" name="Emission" step="0.1" class="form-control form-control-sm" required />
+        <div class="col-md-2">
+            <label asp-for="NewFlight.Emission" class="form-label">Emission</label>
+            <input asp-for="NewFlight.Emission" type="number" step="0.1" class="form-control form-control-sm" />
+            <span asp-validation-for="NewFlight.Emission" class="text-danger small"></span>
         </div>
-        <div class="col-md-1">
-            <label class="form-label">Price</label>
-            <input type="number" name="Price" step="0.01" class="form-control form-control-sm" required />
+        <div class="col-md-2">
+            <label asp-for="NewFlight.Price" class="form-label">Price</label>
+            <input asp-for="NewFlight.Price" type="number" step="0.01" class="form-control form-control-sm" />
+            <span asp-validation-for="NewFlight.Price" class="text-danger small"></span>
         </div>
-        <div class="col-md-1">
-            <label class="form-label">&nbsp;</label>
-            <button type="submit" class="btn btn-primary btn-sm w-100">Add</button>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary btn-sm w-100">Add Flight</button>
         </div>
     </div>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/custom-validation.js"></script>
+}
